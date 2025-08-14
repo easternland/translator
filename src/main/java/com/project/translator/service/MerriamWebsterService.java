@@ -5,15 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.translator.feignclients.MerriamDictionaryClient;
 import com.project.translator.feignclients.MerriamThesaurusClient;
 import com.project.translator.models.dto.*;
-import com.project.translator.models.dto.DictionaryResponse;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class MerriamWebsterService {
@@ -21,21 +19,26 @@ public class MerriamWebsterService {
     private final MerriamDictionaryClient merriamDictionaryClient;
     private final MerriamThesaurusClient merriamThesaurusClient;
 
-     private static final String MERRIAM_DICTIONARY_API = "";
-     private static final String MERRIAM_THESAURUS_API = "";
+     private final String merriamDictionaryApiKey;
+     private final String merriamThesaurusApiKey;
 
      @Autowired
-     public MerriamWebsterService(MerriamDictionaryClient mdc, MerriamThesaurusClient mtc){
+     public MerriamWebsterService(MerriamDictionaryClient mdc,
+                                  MerriamThesaurusClient mtc,
+                                  @Value("${merriam.dictionary.api.key}") String merriamDictionaryApiKey,
+                                  @Value("${merriam.thesaurus.api.key}") String merriamThesaurusApiKey) {
         this.merriamDictionaryClient = mdc;
-        this.merriamThesaurusClient = mtc;
-    }
+         this.merriamThesaurusClient = mtc;
+         this.merriamDictionaryApiKey = merriamDictionaryApiKey;
+         this.merriamThesaurusApiKey = merriamThesaurusApiKey;
+     }
 
     private ThesaurusResponse getThesaurusResponse (String word){
-        return merriamThesaurusClient.getThesaurusEntries(word, MERRIAM_THESAURUS_API).get(0);
+        return merriamThesaurusClient.getThesaurusEntries(word, merriamThesaurusApiKey).get(0);
     }
 
     private String getDictionaryResponse (String word){
-         return merriamDictionaryClient.getDictionaryEntries(word, MERRIAM_DICTIONARY_API);
+         return merriamDictionaryClient.getDictionaryEntries(word, merriamDictionaryApiKey);
     }
 
     public SortedSet<String> getUsageExamples(String json) throws Exception {
