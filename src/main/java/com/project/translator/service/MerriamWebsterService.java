@@ -21,7 +21,7 @@ public class MerriamWebsterService {
 
      private final String merriamDictionaryApiKey;
      private final String merriamThesaurusApiKey;
-
+    //ctrl + b чтобы посмотреть класс
      @Autowired
      public MerriamWebsterService(MerriamDictionaryClient mdc,
                                   MerriamThesaurusClient mtc,
