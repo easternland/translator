@@ -78,7 +78,7 @@ public class MerriamWebsterService {
 
 
     private SortedSet<String> getSynonyms(ThesaurusResponse thesaurusResponse){
-        return new TreeSet<String>(
+        return new TreeSet<>(
                 thesaurusResponse.meta().syns()
                 .stream()
                 .flatMap(List::stream)
@@ -89,7 +89,7 @@ public class MerriamWebsterService {
     }
 
     private SortedSet<String> getAntonyms(ThesaurusResponse thesaurusResponse){
-        return new TreeSet<String>(
+        return new TreeSet<>(
                 thesaurusResponse.meta().ants()
                 .stream()
                 .flatMap(List::stream)
